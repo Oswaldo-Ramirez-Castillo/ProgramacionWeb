@@ -5,24 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modelo de cajas </title>
     <style>
-        p{
-            display: inline;
+        h1{
+            display: block;
+            margin-bottom: 100px;
+            font-family:'Courier New', Courier, monospace;
+            color: #1b263b;
         }
+        
+        h2{
+            display: block;
+            color: #415a77;
+            font-family:'Courier New', Courier, monospace;
+        }
+        body{
+            background-color: #e0e1dd;            
+        }
+        
         .Caja
         {            
+            margin-top: 150px;
+            height: 450px;
+            width: 800px;
             display: inline;
-            border: 1px solid #069;
+            border: 2px solid #415a77;
+            margin: 25px;
+            padding: 25px;           
+            border-radius: 10%;
+            background-color: #778da9;
+            font-weight: bold;
+            font-family: 'Courier New', Courier, monospace;
+            
         }
+        
+        .Contenedor{
+            margin-left:  200px;
+            margin-bottom: 100px;
+        }
+
+        .OtroContenedor{            
+            display: block;           
+        }
+
+        .OtraCaja{
+            margin:12px;
+            display: block;            
+            height: 50px;
+            width: 50px;           
+            border: 2px solid #415a77;
+            border-radius: 10%;
+            padding: 60px;                        
+            background-color: #778da9;
+            font-weight: bold;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;            
+        }
+       
     </style>
 </head>
 <body>
-    <div class="Caja">
-        <p>hola</p>
-    </div>
 
-    <div class="Caja">
-        <p>como estas</p> 
+    <h1>Esta es una pagina de practica</h1>
+    <h2>Display inline</h2>
+
+    <div class="Contenedor">
+        <div class="Caja">
+            hola     
+        </div>
+    
+        <div class="Caja">
+            Bloque inline
+        </div>        
     </div>
+    
+    <div class="OtroContenedor">
+        <h2> Display block</h2>
+
+        <div class="OtraCaja"> Un bloque </div>
+        <div class="OtraCaja"> Otro bloque</div>
+    </div>
+    
 
 </body>
 </html>
