@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Static</title>
+    <style>
+        body{
+            background-color: #caf0f8;
+        }
+        .caja{
+            width: 200px;
+            height: 200px;
+            margin: 10px;
+            background-color: #00b4d8;
+            border: 5px solid #03045e;
+            color: #90e0ef;
+            font-size: 50px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            text-align: center;
+            line-height: 200px;
+            border-radius: 10%;
+            
+        }
+
+        #caja2{
+            position: static;
+            left: 250px;
+        }
+
+        p{
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: 30px; 
+        }
+    </style>
+</head>
+<body>
+    <div class="caja" id="caja1">Caja 1</div>
+    <div class="caja" id="caja2">Caja 2</div>
+    <p>El valor static hace que el elemento sea posicionado de acuerdo al flujo normal del documento.</p>
+    <div class="caja" id="caja3">Caja 3</div>
+    <div class="caja" id="caja4">Caja 4</div>
+    <div class="caja" id="caja5">Caja 5</div>
+
+</body>
+</html>

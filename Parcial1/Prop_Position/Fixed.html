@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIXED</title>
+    <style>
+        body{
+            background-color: #E5E5CB;
+        }
+        .caja{
+            margin: 10px;
+            width: 200px;
+            height: 200px;
+            background-color: #3C2A21;
+            border: 2px solid #1A120B;
+            color: #D5CEA3;
+            font-size: 50px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            text-align: center;
+            line-height: 200px;
+            border-radius: 10%;
+        }
+
+        #caja2{
+            position: fixed;
+            top: 50px;
+            left: 50px;
+        }
+        p{
+            position: fixed;
+            top: 150px;
+            left: 300px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="caja" id="caja1">Caja 1</div>
+    <div class="caja" id="caja2">Caja 2</div>
+    <p>El valor fixed cambia el flujo del elemento en relación al navegador</p>
+    <div class="caja" id="caja3">Caja 3</div>
+    <div class="caja" id="caja4">Caja 4</div>
+    <div class="caja" id="caja5">Caja 5</div>
+
+</body>
+</html>
