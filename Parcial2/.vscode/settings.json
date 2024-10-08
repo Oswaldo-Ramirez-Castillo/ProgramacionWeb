@@ -1,0 +1,4 @@
+{
+    "httpyac.responseStorage": "file",
+    "httpyac.responseViewContent": "full"
+}
