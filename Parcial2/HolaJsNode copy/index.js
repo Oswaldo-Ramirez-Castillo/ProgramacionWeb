@@ -1,10 +1,3 @@
+import { say } from 'cowsay';
 
-
-console.log("Holamundooooo");
-const cowsay = require ("cowsay");
-
-console.log(cowsay.say({
-    text: "soy un modulo",
-    e: "Oo",
-    T: "U"
-}));
+console.log(say({ text: 'grazing in the browser' }));
