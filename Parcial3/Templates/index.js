@@ -2,15 +2,11 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
-//console.log(__dirname);
-//console.log(__filename);
 app.use(express.json());
 app.use(express.text());
 
 app.set('view engine','pug');
 app.set('views', path.join(__dirname, 'views'));
-
-
 
 app.get('/administrativos', (req, res) => {
     console.log(req.query);
