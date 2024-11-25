@@ -6,21 +6,21 @@ const PDFDocument = require('pdfkit');
 
 const app = express();
 
-// Configuración de carpetas
-const uploadFolder = path.join(__dirname, '/uploads/');
-const pdfFolder = path.join(__dirname, '/pdfs/');
+// Verificar existencia de carpetas 'uploads' y 'pdfs'
+const uploadFolder = './uploads';
+const pdfFolder = './pdfs';
 
-// Crear las carpetas si no existen
 if (!fs.existsSync(uploadFolder)) {
     fs.mkdirSync(uploadFolder);
 }
+
 if (!fs.existsSync(pdfFolder)) {
     fs.mkdirSync(pdfFolder);
 }
 
 // Configuración de Multer para manejar la subida de archivos
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, uploadFolder),
+    destination: (req, file, cb) => cb(null, path.join(__dirname, './uploads/')),
     filename: (req, file, cb) => cb(null, `${Date.now()}-${file.originalname}`)
 });
 
@@ -36,6 +36,7 @@ const upload = multer({
     }
 });
 
+// Middleware para procesar JSON y datos del formulario
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -44,15 +45,15 @@ app.post('/submit', upload.fields([
     { name: 'imagen-foto', maxCount: 1 },
     { name: 'imagen-pokemon', maxCount: 1 },
     { name: 'imagen-juego', maxCount: 1 }
-]), (req, res) => {
+]), async (req, res) => {
     const {
-        nombre, 
-        "apellido-paterno": apellidoPaterno, 
-        "apellido-materno": apellidoMaterno, 
-        edad, 
-        genero, 
-        "generacion-favorita": generacionFavorita, 
-        "region-favorita": regionFavorita, 
+        nombre,
+        "apellido-paterno": apellidoPaterno,
+        "apellido-materno": apellidoMaterno,
+        edad,
+        genero,
+        "generacion-favorita": generacionFavorita,
+        "region-favorita": regionFavorita,
         "tipo-favorito": tipoFavorito,
         "mecanica-favorita": mecanicaFavorita,
         "pokemon-favorito": pokemonFavorito,
@@ -70,7 +71,7 @@ app.post('/submit', upload.fields([
 
     try {
         // Generar la ruta y el flujo para el PDF
-        const pdfName = `${Date.now()}-pokemon-form.pdf`;
+        const pdfName = `${Date.now()}-pokemon-formulario.pdf`;
         const pdfPath = path.join(pdfFolder, pdfName);
         const pdfDoc = new PDFDocument();
         const writeStream = fs.createWriteStream(pdfPath);
@@ -99,42 +100,37 @@ app.post('/submit', upload.fields([
         pdfDoc.moveDown();
 
         // Agregar imágenes al PDF
-       // Agregar imágenes al PDF
-       ['imagen-foto', 'imagen-pokemon', 'imagen-juego'].forEach((key, index) => {
-        if (req.files[key] && req.files[key].length > 0) {
-            const filePath = req.files[key][0].path;
-            if (fs.existsSync(filePath)) {
-                pdfDoc.moveDown();
-                pdfDoc.text(`Imagen asociada (${key}):`);
-                pdfDoc.image(filePath, {
-                    fit: [200, 200],
-                    align: 'center',
-                    valign: 'center',
-                });
-                pdfDoc.moveDown(2); // Espacio entre imágenes
+        ['imagen-foto', 'imagen-pokemon', 'imagen-juego'].forEach((key) => {
+            if (req.files[key] && req.files[key].length > 0) {
+                const filePath = req.files[key][0].path;
+                if (fs.existsSync(filePath)) {
+                    pdfDoc.moveDown();
+                    pdfDoc.text(`Imagen asociada (${key}):`);
+                    pdfDoc.image(filePath, {
+                        fit: [200, 200],
+                        align: 'center',
+                        valign: 'center',
+                    });
+                    pdfDoc.moveDown(2); // Espacio entre imágenes
+                }
             }
-        }
-    });
-    
-
+        });
 
         pdfDoc.end();
 
-        // Descargar el PDF cuando esté listo
+        // Esperar a que el PDF termine de generarse
         writeStream.on('finish', () => {
-            console.log(`PDF generado correctamente en: ${pdfPath}`);
-            res.download(pdfPath, pdfName, (err) => {
-                if (err) {
-                    console.error('Error al enviar el archivo:', err);
-                    res.status(500).send('Error al descargar el archivo.');
-                }
-            });
+            res.setHeader('Content-Disposition', 'inline; filename="pokemon-formulario.pdf"'); // Inline para abrir en navegador
+            res.setHeader('Content-Type', 'application/pdf');
+            res.sendFile(path.resolve(pdfPath)); // Enviar el PDF generado
         });
+        
 
         writeStream.on('error', (err) => {
-            console.error('Error al generar el PDF:', err);
+            console.error('Error al escribir el PDF:', err);
             res.status(500).send('Error al generar el PDF.');
         });
+
     } catch (error) {
         console.error('Error inesperado:', error);
         res.status(500).send('Error al procesar el formulario.');
@@ -146,3 +142,4 @@ const PORT = 8082;
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
+

@@ -147,7 +147,7 @@
 
     <!-- cambiar el # por la ruta de mi backend -->
     <h1>Formulario de Pokémon</h1>
-    <form action="http://localhost:8082/submit" method="post" enctype="multipart/form-data">
+    <form id="form" action="http://localhost:8082/submit" method="post" enctype="multipart/form-data" target="_blank">
         <!-- 1. Nombre -->
         <div class="form-group">
             <label for="nombre" id="apartados">Nombre:</label>
@@ -361,7 +361,7 @@
         </div>
 
         <!-- Botón de enviar -->
-        <button type="submit">Enviar</button>
+        <button type="button" id="btnEnviar">Enviar</button>
     </form>
 
     <script>
@@ -517,6 +517,32 @@
             mostrarImagenTipo(); // Carga la imagen predeterminada si ya hay una selección
         }
     };
+    </script>
+
+    <script>
+        document.getElementById("btnEnviar").addEventListener("click", async () => {
+            const form = document.getElementById("form");
+            const data = new FormData(form);
+
+            try {
+                const response = await fetch("http://localhost:8082/submit", {
+                    method: "POST",
+                    body: data,
+                });
+
+                if (response.ok) {
+                    const archivoPDF = await response.blob();
+                    const urlArchivo = URL.createObjectURL(archivoPDF);
+                    window.open(urlArchivo, "_blank"); // Abre el PDF en una nueva pestaña
+                } else {
+                    const errorData = await response.json();
+                    alert("Error: " + (errorData.error || "Error desconocido"));
+                }
+            } catch (error) {
+                console.error("Error en el envío:", error.message);
+                alert("Ocurrió un error al enviar el formulario.");
+            }
+        });
     </script>
 </body>
 </html>
